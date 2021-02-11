@@ -1,0 +1,36 @@
+module instruction_decode(IR);
+  /*
+  	Decodes Instruction to multiple parts like opcode, registers, etc
+    Args:
+    	IR: (reg type): Contains 32-bit instruction
+  */
+  
+  // Declaration
+  
+  input IR;
+  reg [31:0] IR; 
+  
+  reg [5:0] opcode;
+
+  // R-type instruction  Arithmetic instruction format
+  reg [4:0] arithmetic_rs;
+  reg [4:0] arithmetic_rt;
+  reg [4:0] arithmetic_rd;
+  reg [4:0] arithmetic_shamt;
+  reg [5:0] arithmetic_funct;
+  
+  // Load or store instruction
+  reg [4:0] ls_rs;
+  reg [4:0] ls_rt;
+  reg [15:0] ls_address;
+  
+  // Branch instruction
+  reg [4:0] bi_rs;
+  reg [4:0] bi_rt;
+  reg [15:0] bi_address;
+  
+  
+  // Assigning the blocks using instruction register
+  // Need to assign
+  
+ end

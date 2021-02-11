@@ -1,0 +1,75 @@
+// Code your design here
+module control(opcode);
+  /*
+  	Generates the following control signals based on the opcode
+      1. RegDst
+      2. ALUSrc
+      3. MemtoReg
+      4. RegWrite
+      5. MemRead
+      6. MemWrite
+      7. Branch
+      8. ALUOp1
+      9. ALUOp0
+  */
+  
+  // Declaration of control signals
+  wire RegDst,ALUSrc,MemtoReg,RegWrite,MemRead,MemWrite,Branch,ALUOp1,ALUOp0;
+  
+  // Defining instruction types obtained from opcode
+  parameter r_type = 6b'000000, lw = 6b'100011, sw = 6b'101011 , beq = 6b'000100;
+  
+  always @(*)
+    case(opcode)
+  
+      // Defining Behaviour if opcode is register type
+      r_type : 
+        assign RegDst = 1;
+      	assign ALUSrc = 0;
+      	assign MemtoReg = 0;
+      	assign RegWrite = 1;
+      	assign MemRead = 0;
+      	assign MemWrite = 0;
+      	assign Branch = 0;
+      	assign ALUOp1 = 1;
+      	assign ALUOp0 = 0;
+      
+      // Defining Behaviour if opcode is load word
+      lw : 
+        assign RegDst = 0;
+      	assign ALUSrc = 1;
+      	assign MemtoReg = 1;
+      	assign RegWrite = 1;
+      	assign MemRead = 1;
+      	assign MemWrite = 0;
+      	assign Branch = 0;
+      	assign ALUOp1 = 0;
+      	assign ALUOp0 = 0;
+      
+      // Defining Behaviour if opcode is store word
+      sw :
+        // assign RegDst = x; since it is dont care lets leave it
+        assign ALUSrc = 1;
+      	// assign MemtoReg = x; since it is dont care lets leave it
+      	assign RegWrite = 0;
+      	assign MemRead = 0;
+      	assign MemWrite = 1;
+      	assign Branch = 0;
+      	assign ALUOp1 = 0;
+      	assign ALUOp0 = 0;
+      
+      // Defining Behaviour if opcode is branch equal ( beq )
+      beq : 
+        // assign RegDst = x;  since it is dont care lets leave it
+        assign ALUSrc = 0;
+      	//assign MemtoReg = x;  since it is dont care lets leave it
+      	assign RegWrite = 0;
+      	assign MemRead = 0;
+      	assign MemWrite = 0;
+      	assign Branch = 1;
+      	assign ALUOp1 = 0;
+      	assign ALUOp0 = 1;
+      
+    endcase
+endmodule
+      
