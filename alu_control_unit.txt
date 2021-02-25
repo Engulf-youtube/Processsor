@@ -1,0 +1,88 @@
+module alu_control(alu_op1, alu_op0, funct , alu_control_ip3, alu_control_ip2,alu_control_ip1, alu_control_ip0);
+  /*
+  	alu_control takes in alu_op generated from control unit and generates 
+    alu_control_ip lines to control alu.
+    Args:
+    	alu_op : 00, 01, 10 ; for load word, store word, R-type
+        funct : 6 bits ; function to be performed if the instruction is r-type
+        alu_control_ip: 0010, 0110, 0000, 0001, 0111
+  */
+  
+  input alu_op1, alu_op0;
+  output alu_control_ip3, alu_control_ip2, alu_control_ip1, alu_control_ip0;
+  
+  wire alu_op1, alu_op0, alu_control_ip3, alu_control_ip2, alu_control_ip1, alu_control_ip0, combined_aluop;
+  
+  // Combining alu_op to get a single value
+  assign combined_aluop = alu_op0 + alu_op1*2;
+  
+  // Defining load, store, branch, register type parameters
+  parameter l_s_w = 1d'0, branch = 1d'1, register_type = 1d'2; 
+  
+  // Defining Function Fields
+  parameter arithmetric_add = 6b'100000;
+  parameter arithmetric_sub = 6b'100010;
+  parameter logical_and = 6b'100100;
+  parameter logical_or = 6b'100101;
+  parameter set_on_less_than = 6b'101010;
+  
+  always @(*)
+    case(combined_aluop)
+      
+      // Defining Behaviour if combined_aluop is load word or store word
+      l_s_w : 
+        // Add instruction
+        assign alu_control_ip3 = 0;
+      	assign alu_control_ip2 = 0;
+      	assign alu_control_ip1 = 1;
+      	assign alu_control_ip0 = 0;
+      
+      // Defining Behaviour if combined_aluop is Branch equal condition
+      branch :
+        // Subtract instruction
+        assign alu_control_ip3 = 0;
+      	assign alu_control_ip2 = 1;
+      	assign alu_control_ip1 = 1;
+      	assign alu_control_ip0 = 0;
+      
+      // Defining Behaviour if combined_aluop is Register condition
+      register_type :
+        // depends on function
+        case(funct)
+          
+          // Arithmetric Addition
+          arithmetric_add:
+            assign alu_control_ip3 = 0;
+            assign alu_control_ip2 = 0;
+            assign alu_control_ip1 = 1;
+            assign alu_control_ip0 = 0;
+        
+          // Arithmetric Subtraction
+          arithmetric_sub:
+            assign alu_control_ip3 = 0;
+            assign alu_control_ip2 = 1;
+            assign alu_control_ip1 = 1;
+            assign alu_control_ip0 = 0;
+        
+          // Logical And
+          logical_and:
+            assign alu_control_ip3 = 0;
+            assign alu_control_ip2 = 0;
+            assign alu_control_ip1 = 0;
+            assign alu_control_ip0 = 0;
+          	
+          // Logical OR
+          logical_or:
+            assign alu_control_ip3 = 0;
+            assign alu_control_ip2 = 0;
+            assign alu_control_ip1 = 0;
+            assign alu_control_ip0 = 1;
+          
+          // set on less than
+          set_on_less_than:
+            assign alu_control_ip3 = 0;
+            assign alu_control_ip2 = 1;
+            assign alu_control_ip1 = 1;
+            assign alu_control_ip0 = 1;
+     endcase
+endmodule       
