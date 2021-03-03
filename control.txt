@@ -1,4 +1,3 @@
-// Code your design here
 module control(opcode);
   /*
   	Generates the following control signals based on the opcode

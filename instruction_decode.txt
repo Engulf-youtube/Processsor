@@ -12,25 +12,35 @@ module instruction_decode(IR);
   
   reg [5:0] opcode;
 
-  // R-type instruction  Arithmetic instruction format
-  reg [4:0] arithmetic_rs;
-  reg [4:0] arithmetic_rt;
-  reg [4:0] arithmetic_rd;
-  reg [4:0] arithmetic_shamt;
-  reg [5:0] arithmetic_funct;
+  parameter load_type_ins = 6d'35, store_type_ins = 6d'43, branch_type_ins = 6d'1, reg_type_ins = 6d'0;
   
-  // Load or store instruction
-  reg [4:0] ls_rs;
-  reg [4:0] ls_rt;
-  reg [15:0] ls_address;
+  always @(*)
+    case(opcode)
+      
+      reg_type_ins:
+        // R-type instruction  Arithmetic instruction format
+        reg [4:0] arithmetic_rs;
+        reg [4:0] arithmetic_rt;
+        reg [4:0] arithmetic_rd;
+        reg [4:0] arithmetic_shamt;
+        reg [5:0] arithmetic_funct;
+  	
+      load_type_ins:
+        // Load or store instruction
+        reg [4:0] ls_rs;
+        reg [4:0] ls_rt;
+        reg [15:0] ls_address;
   
-  // Branch instruction
-  reg [4:0] bi_rs;
-  reg [4:0] bi_rt;
-  reg [15:0] bi_address;
-  
-  
-  // Assigning the blocks using instruction register
-  // Need to assign
-  
+      store_type_ins:
+        // Load or store instruction
+        reg [4:0] ls_rs;
+        reg [4:0] ls_rt;
+        reg [15:0] ls_address;
+      
+      branch_type_ins:
+        // Branch instruction
+        reg [4:0] bi_rs;
+        reg [4:0] bi_rt;
+        reg [15:0] bi_address;
+
  end
